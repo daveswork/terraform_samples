@@ -15,10 +15,20 @@ test='
 import jenkins.model.*\n
 import hudson.util.*;\n
 import jenkins.install.*;\n
+import hudson.security.*;\n
 
 def instance = Jenkins.getInstance()\n
 
 instance.setInstallState(InstallState.INITIAL_SETUP_COMPLETED)\n
+
+instance.setSecurityRealm(new HudsonPrivateSecurityRealm(false))\n
+def strategy = new hudson.security.FullControlOnceLoggedInAuthorizationStrategy()\n
+strategy.setAllowAnonymousRead(false)\n
+instance.setAuthorizationStrategy(strategy)\n
+
+def user = instance.getSecurityRealm().createAccount("admin", "admin-pass")\n
+user.save()\n
+instance.save()\n
 '
 
 echo -e $test > /var/lib/jenkins/init.groovy.d/basic-security.groovy
