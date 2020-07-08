@@ -3,11 +3,14 @@ provider "aws" {
     region = "us-east-1"
 }
 
+# Sets up a key pair in aws from a local public RSA key
 resource "aws_key_pair" "dave"{
     key_name = "daves-windows-rsa"
     public_key = file(var.private_key_path)
 }
 
+# Sets up the security group from our EC2 instance. 
+# Allows SSH access and opens up port 8080 from anywhere.
 resource "aws_security_group" "allow_all_jenkins" {
     name    = "allow_jenkins_all_sources"
     description = "allows ssh ingress from all sources"
@@ -34,6 +37,8 @@ resource "aws_security_group" "allow_all_jenkins" {
     } 
 }
 
+# Finally, this creates an EC2 instance that will install Jenkins on startup using the 
+# specific shell script.
 resource "aws_instance" "example" {
     ami             = "ami-09d95fab7fff3776c"
     instance_type   = "t2.micro"
@@ -42,6 +47,7 @@ resource "aws_instance" "example" {
     security_groups = ["allow_jenkins_all_sources"]
 }
 
+# This just gives us the public IP of the instance so we can connect to it.
 output "Public_IP" {
     value = aws_instance.example.public_ip
 }
