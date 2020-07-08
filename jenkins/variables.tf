@@ -1,4 +1,4 @@
-variable "private_key_path" {
+variable "public_key_path" {
     type    = string
     default  = "./pub_key.pub"
 }

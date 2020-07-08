@@ -6,7 +6,7 @@ provider "aws" {
 # Sets up a key pair in aws from a local public RSA key
 resource "aws_key_pair" "dave"{
     key_name = "daves-windows-rsa"
-    public_key = file(var.private_key_path)
+    public_key = file(var.public_key_path)
 }
 
 # Sets up the security group from our EC2 instance. 
