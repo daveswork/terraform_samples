@@ -38,7 +38,7 @@ resource "aws_security_group" "allow_all_jenkins" {
 }
 
 # Finally, this creates an EC2 instance that will install Jenkins on startup using the 
-# specific shell script.
+# specified shell script.
 resource "aws_instance" "example" {
     ami             = "ami-09d95fab7fff3776c"
     instance_type   = "t2.micro"
