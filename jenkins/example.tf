@@ -51,3 +51,7 @@ resource "aws_instance" "example" {
 output "Public_IP" {
     value = aws_instance.example.public_ip
 }
+
+output "Jenkins_URL" {
+    value = "http://${aws_instance.example.public_ip}:8080"
+}
