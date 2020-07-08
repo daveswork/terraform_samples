@@ -21,7 +21,7 @@ password "admin-pass" from the script.
 2. Creates a security group allowing inbound traffic on ports 22 and 8080, and allows all outbound.
 3. Creates an EC2 instance with the previously configured key pair and security group.
 4. Adds the contents of `install_jenkins.sh` to the instance USER DATA which will be run on startup. 
-5. Provides the public IP address for the EC2 instance as well as the URL string to access Jenkins (when it eventually starts up, approximately 2-3 minutes).
+5. Provides the public IP address for the EC2 instance as well as the URL string to access Jenkins (when it eventually starts up, approximately 2-3 minutes after the   `terraform apply` is completed).
 
 `install_jenkins.sh`:
 1. Updates the package management system, adds the Jenkins repository.
