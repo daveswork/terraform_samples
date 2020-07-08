@@ -3,6 +3,7 @@
 yum remove java-1.7.0-openjdk -y
 yum install java-1.8.0 -y
 yum update -y
+yum install awscli
 wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
 rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
 yum install jenkins -y
@@ -40,3 +41,8 @@ echo -e $test > /var/lib/jenkins/init.groovy.d/basic-security.groovy
 # Finally we can start Jenkins
 service jenkins start
 service jenkins enable
+
+# Give jenkins enough time to start up and load the basic-security.groovy script
+# Then we'll remove it. 
+sleep 3m
+rm /var/lib/jenkins/init.groovy.d/basic-security.groovy
