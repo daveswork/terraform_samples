@@ -3,12 +3,12 @@ provider "aws" {
     region = "us-east-1"
 }
 
+data "aws_vpc" "current" {  
+}
+
 data "aws_subnet" "collection" {
     for_each            = toset(var.az)
     availability_zone   = each.value
-}
-
-data "aws_vpc" "current" {  
 }
 
 # Sets up a key pair in aws from a local public RSA key
