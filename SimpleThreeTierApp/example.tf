@@ -67,6 +67,33 @@ resource "aws_security_group" "allow_ssh" {
   }
 }
 
+resource "aws_security_group" "allow_psql_connections" {
+    name          = "allow_inbound_psql_connections"
+    description   = "Allows inbound PSQL connections."
+    ingress{
+        description = "Allows inbound ssh connection"
+        from_port   = 5432
+        to_port     = 5432
+        protocol    = "tcp"
+        cidr_blocks = [for subnet in data.aws_subnet.collection: subnet.cidr_block]
+  }
+}
+
+#Sets up a PostgreSQL database
+resource "aws_db_instance" "my_db"{
+    allocated_storage   = 20
+    storage_type        = "gp2"
+    engine              = "postgres"
+    engine_version      = "11.6"
+    instance_class      = "db.t2.micro"
+    name                = "stuffit"
+    username            = "pgme"
+    password            = "notthisplease"
+    skip_final_snapshot = true
+    identifier          = "myappdb"
+    vpc_security_group_ids  = [aws_security_group.allow_psql_connections.id]
+}
+
 #Sets up an Application Load Balancer
 resource "aws_lb" "my_alb"{
     name                = "my-sample-alb"
@@ -141,4 +168,8 @@ resource "aws_autoscaling_attachment" "our_app" {
 #Here's the publicly accessible URL
 output "Your_website_is_here" {
     value = "http://${aws_lb.my_alb.dns_name}"
+}
+
+output "db_connection_string" {
+    value = aws_db_instance.my_db.endpoint
 }
