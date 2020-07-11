@@ -100,7 +100,7 @@ resource "aws_lb" "my_alb"{
     internal            = false
     load_balancer_type  = "application"
     subnets             = [for subnet in data.aws_subnet.collection: subnet.id]
-    security_groups     = ["${aws_security_group.allow_http.id}", "${aws_security_group.allow_outbound.id}"]
+    security_groups     = [aws_security_group.allow_http.id, aws_security_group.allow_outbound.id]
 }
 
 #Sets up an ALB target group
