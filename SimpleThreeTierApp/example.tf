@@ -50,7 +50,7 @@ resource "aws_security_group" "allow_8080" {
         from_port   = 8080
         to_port     = 8080
         protocol    = "tcp"
-        cidr_blocks = var.all_networks
+        cidr_blocks = [for subnet in data.aws_subnet.collection: subnet.cidr_block]
     }
   
 }
@@ -107,7 +107,7 @@ resource "aws_lb_listener" "my_alb" {
     }
 }
 
-#Sets up a launch template for use by the ASG
+#Sets up a launch template for use by the Auto Scaling Group
 resource "aws_launch_template" "my_app"{
     name            = "custom-app"
     image_id        = "ami-09d95fab7fff3776c"
