@@ -16,7 +16,7 @@ The Jenkins install script disables the startup wizard and creates an admin user
 password "admin-pass" from the script. 
 
 
-`example.tf`:
+`main.tf`:
 1. Creates a key pair for ssh access.
 2. Creates a security group allowing inbound traffic on ports 22 and 8080, and allows all outbound.
 3. Creates an EC2 instance with the previously configured key pair and security group.

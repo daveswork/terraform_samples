@@ -27,7 +27,7 @@ The Auto Scaling Group configuration is divided across three resource blocks:
 You my have noticed that in addition to a few blocks for security groups at the top, there are two 'data' blocks. Mostly to get environmental variables such as the VPC id, the CIDR blocks for defined availablity zones along with their unique subnet id. 
 
 
-`example.tf`:
+`main.tf`:
 1. Defines a data resource to reference some environmental data (VPC and Subnets).
 2. Creates security groups for our ALB, EC2 instances, and Database.
 3. Creates an PostgreSQL database.
