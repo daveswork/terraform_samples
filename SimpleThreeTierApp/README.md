@@ -43,6 +43,6 @@ You my have noticed that in addition to a few blocks for security groups at the 
 
 `variables.tf`:
 1. Sets the location for the rsa public key that will be added to the EC2 instances.
-2. Sets the location for the `install_hpptds.sh` file. 
+2. Sets the location for the `install_hpptd.sh` file. 
 3. Sets the CIDR block(s) for inbound access over ports 22 and 80.
 4. Sets a list of availability zones that the instances will be provisioned in.
