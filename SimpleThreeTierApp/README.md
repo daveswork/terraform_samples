@@ -10,7 +10,8 @@ However in the `variables.tf` file you can change that to be anywhere, eg. `~/.s
 
 Essentially, this creates a loadbalancer in place to receive traffic on port 80 and routes it to port 8080 in an EC2 instance that's part of an autoscaling group, along with a Postgres database, for, whatever. 
 
-The database is the most straighforward component, requiring only a single resource block. On the other hand, the loadbalancer and auto scaling group require a bit more.
+The database is the most straighforward component, requiring only a single resource block.  On the other hand, the loadbalancer and auto scaling group require a bit more.
+**Normally credentials will be in some sort of secrets manager or environment variable, but for simplicity it's in this config.**
 
 The loadbalancer's configuration could have been a single resource block if I were using a classic Elastic Load Balancer. However, since we're in the 21st Century, I've opted to go with using an Applicaiton Load Balancer. 
 

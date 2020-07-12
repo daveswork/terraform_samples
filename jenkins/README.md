@@ -13,7 +13,7 @@ Terraform simply handles the cloud assets, whereas jenkins is installed from `in
 when the EC2 instance starts up. It will report completion once the AWS assets are created, however the Jenkins installation process will still need a few minutes to complete.
 
 The Jenkins install script disables the startup wizard and creates an admin user "admin" with 
-password "admin-pass" from the script. 
+password "admin-pass" from the script. **Normally credentials will be in some sort of secrets manager or environment variable, but for simplicity it's in this config.**
 
 
 `main.tf`:
