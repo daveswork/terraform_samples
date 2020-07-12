@@ -3,6 +3,7 @@ provider "aws" {
     region = "us-east-1"
 }
 
+#Creates needed data nodes.
 data "aws_vpc" "current" {  
 }
 
@@ -11,13 +12,13 @@ data "aws_subnet" "collection" {
     availability_zone   = each.value
 }
 
-# Sets up a key pair in aws from a local public RSA key
+#Creates a key pair in aws from a local public RSA key.
 resource "aws_key_pair" "dave"{
     key_name = "daves-windows-rsa"
     public_key = file(var.public_key_path)
 }
 
-#Security Groups
+#Creates the needed Security Groups.
 resource "aws_security_group" "allow_http"{
     name        = "allow_http_access"
     description = "Allows http (insecure) access from specified sources"
@@ -79,7 +80,8 @@ resource "aws_security_group" "allow_psql_connections" {
   }
 }
 
-#Sets up a PostgreSQL database
+#Creates a PostgreSQL database.
+#Several different ways to handle secrets, but wanted to keep this flat, with minimal input.
 resource "aws_db_instance" "my_db"{
     allocated_storage   = 20
     storage_type        = "gp2"
@@ -94,7 +96,7 @@ resource "aws_db_instance" "my_db"{
     vpc_security_group_ids  = [aws_security_group.allow_psql_connections.id]
 }
 
-#Sets up an Application Load Balancer
+#Creates an Application Load Balancer.
 resource "aws_lb" "my_alb"{
     name                = "my-sample-alb"
     internal            = false
@@ -103,7 +105,7 @@ resource "aws_lb" "my_alb"{
     security_groups     = [aws_security_group.allow_http.id, aws_security_group.allow_outbound.id]
 }
 
-#Sets up an ALB target group
+#Creates an ALB target group.
 resource "aws_alb_target_group" "my_alb" {
     name        = "my-alb-targetgroup"
     port        = 8080
@@ -123,7 +125,8 @@ resource "aws_alb_target_group" "my_alb" {
     }
 }
 
-#Sets up an ALB Listener
+#Creates an ALB Listener.
+#To keep the config simple, there's no SSL config, which would require a few more resource nodes.
 resource "aws_lb_listener" "my_alb" {
     load_balancer_arn   = aws_lb.my_alb.arn
     port        = 80
@@ -134,7 +137,7 @@ resource "aws_lb_listener" "my_alb" {
     }
 }
 
-#Sets up a launch template for use by the Auto Scaling Group
+#Creates a launch template for use by the Auto Scaling Group.
 resource "aws_launch_template" "my_app"{
     name            = "custom-app"
     image_id        = "ami-09d95fab7fff3776c"
@@ -144,7 +147,7 @@ resource "aws_launch_template" "my_app"{
     security_group_names = ["allow_inbound_8080", "allow_inbound_ssh", "allow_outbound_everywhere"]
 }
 
-#Sets up an Auto Scaling Group
+#Creates an Auto Scaling Group.
 resource "aws_autoscaling_group" "our_app" {
     name                = "sample-auto-scaling-group"
     availability_zones  = var.az
@@ -159,13 +162,13 @@ resource "aws_autoscaling_group" "our_app" {
     }
 }
 
-#Set up an ASG attachment
+#Creates an ASG attachment.
 resource "aws_autoscaling_attachment" "our_app" {
   autoscaling_group_name    = aws_autoscaling_group.our_app.name
   alb_target_group_arn      = aws_alb_target_group.my_alb.arn
 }
 
-#Here's the publicly accessible URL
+#Here's the publicly accessible URL.
 output "Your_website_is_here" {
     value = "http://${aws_lb.my_alb.dns_name}"
 }

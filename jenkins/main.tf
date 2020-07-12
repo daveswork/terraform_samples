@@ -3,13 +3,13 @@ provider "aws" {
     region = "us-east-1"
 }
 
-# Sets up a key pair in aws from a local public RSA key
+# Creates a key pair in aws from a local public RSA key
 resource "aws_key_pair" "dave"{
     key_name = "daves-windows-rsa"
     public_key = file(var.public_key_path)
 }
 
-# Sets up the security group from our EC2 instance. 
+# Creates a security group for our EC2 instance. 
 # Allows SSH access and opens up port 8080 from anywhere.
 resource "aws_security_group" "allow_all_jenkins" {
     name    = "allow_jenkins_all_sources"
