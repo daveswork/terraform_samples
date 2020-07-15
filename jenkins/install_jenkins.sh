@@ -4,6 +4,11 @@ yum remove java-1.7.0-openjdk -y
 yum install java-1.8.0 -y
 yum update -y
 yum install awscli
+yum install jq -y
+yum install git -y
+wget https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip
+unzip terraform_0.12.28_linux_amd64.zip
+mv ./terraform /usr/bin
 wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
 rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
 yum install jenkins -y
