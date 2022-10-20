@@ -87,8 +87,8 @@ resource "aws_db_instance" "my_db"{
     storage_type        = "gp2"
     engine              = "postgres"
     engine_version      = "13.7"
-    instance_class      = "db.t2.micro"
-    name                = "stuffit"
+    instance_class      = "db.t3.micro"
+    db_name             = "stuffit"
     username            = "pgme"
     password            = "notthisplease"
     skip_final_snapshot = true
